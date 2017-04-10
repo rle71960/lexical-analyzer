@@ -7,7 +7,7 @@ apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 
-mainClassName = 'ucmo.rle71960.Entry'
+mainClassName = 'ucmo.rle71960.lexical.analysis.Entry'
 
 buildscript {
     repositories {
@@ -25,6 +25,7 @@ repositories {
 }
 
 dependencies {
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
