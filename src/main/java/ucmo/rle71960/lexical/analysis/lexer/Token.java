@@ -33,6 +33,10 @@ public class Token {
         this.token = token;
     }
 
+    public TokenType getType() {
+        return this.type;
+    }
+
     @Override
     public String toString() {
         return this.token;

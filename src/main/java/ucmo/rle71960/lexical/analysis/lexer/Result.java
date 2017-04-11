@@ -39,10 +39,13 @@ public class Result {
      */
     Result() {
         foundTokens = new LinkedHashMap<>();
-        // TODO
-        foundTokens.put(TokenType.ERROR, new ArrayList<>());
-        foundTokens.get(TokenType.ERROR).add(new Token(TokenType.ERROR, "this is an error token"));
-        // foundTokens.put( TokenTypes in order, new ArrayList )
+        for (TokenType type : TokenType.values()) {
+            foundTokens.put(type, new ArrayList<>());
+        }
+    }
+
+    void addToken(Token token) {
+        this.foundTokens.get(token.getType()).add(token);
     }
 
     public void print(Consumer<Token> consumer) {
