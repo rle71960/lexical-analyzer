@@ -1,6 +1,7 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
 /**
  * lexical-analyzer
@@ -35,6 +36,23 @@ public class Lexer {
 
     public Result scan(InputStream stream) {
         // TODO
+        Pattern patterns = compiledPattern();
+
+
         return result;
+    }
+
+    Pattern compiledPattern(final String formattableStringToUse) {
+        final int AFTER_INITIAL_UNION = 1;
+        StringBuilder tokenPatterns = new StringBuilder();
+        for ( TokenType type : TokenType.values() ) {
+            tokenPatterns.append(String.format(formattableStringToUse, type.name(), type.tokenPattern));
+        }
+        return Pattern.compile(tokenPatterns.substring(AFTER_INITIAL_UNION));
+    }
+
+    Pattern compiledPattern() {
+        final String FORMATTABLE_PATTERN_STRING = "|(?<%s>%s)";
+        return compiledPattern(FORMATTABLE_PATTERN_STRING);
     }
 }
