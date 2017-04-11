@@ -27,8 +27,14 @@ import java.io.InputStream;
  */
 public class Lexer {
 
+    Result result;
+
+    public Lexer() {
+        result = new Result();
+    }
+
     public Result scan(InputStream stream) {
         // TODO
-        return new Result();
+        return result;
     }
 }
