@@ -1,9 +1,6 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -32,6 +29,7 @@ import java.util.function.Consumer;
 public class Result {
 
     Map<TokenType, List<Token>> foundTokens;
+    Map<TokenType, String> printHeaders;
 
     /**
      * Only classes from the {@link ucmo.rle71960.lexical.analysis.lexer} package
@@ -39,8 +37,10 @@ public class Result {
      */
     Result() {
         foundTokens = new LinkedHashMap<>();
+        printHeaders = new HashMap<>();
         for (TokenType type : TokenType.values()) {
             foundTokens.put(type, new ArrayList<>());
+            printHeaders.put(type, type.name());
         }
     }
 
@@ -50,6 +50,12 @@ public class Result {
 
     public void print(Consumer<Token> consumer) {
         // TODO iterate this printing all tokens
-        consumer.accept(foundTokens.get(TokenType.ERROR).get(0));
+        //consumer.accept(foundTokens.get(TokenType.ERROR).get(0));
+        for ( Map.Entry<TokenType,List<Token>> entry : foundTokens.entrySet() ) {
+            System.out.println(printHeaders.get(entry.getKey()));
+            for (Token token : entry.getValue()) {
+                consumer.accept(token);
+            }
+        }
     }
 }

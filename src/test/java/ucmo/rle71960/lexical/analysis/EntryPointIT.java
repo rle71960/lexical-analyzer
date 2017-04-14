@@ -30,20 +30,28 @@ import java.io.File;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class EntryIT {
+public class EntryPointIT {
 
-    Entry entry;
+    EntryPoint entryPoint;
 
     @Before
     public void setup() {
-        entry = new Entry();
+        entryPoint = new EntryPoint();
     }
 
     @Test
     public void only_error_token_test() {
-        File file = new File(EntryIT.class.getClassLoader().getResource("testfile1").getFile());
+        File file = new File(EntryPointIT.class.getClassLoader().getResource("testfile1").getFile());
         Assert.assertNotNull(file);
-        Result result = entry.run(file.getAbsolutePath());
+        Result result = entryPoint.run(file.getAbsolutePath());
+        result.print(System.out::println);
+    }
+
+    @Test
+    public void main_test() {
+        File file = new File(EntryPointIT.class.getClassLoader().getResource("main").getFile());
+        Assert.assertNotNull(file);
+        Result result = entryPoint.run(file.getAbsolutePath());
         result.print(System.out::println);
     }
 }

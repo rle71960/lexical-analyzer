@@ -24,11 +24,27 @@ package ucmo.rle71960.lexical.analysis.lexer;
  * SOFTWARE.
  */
 public enum TokenType {
-
-    // TODO other token types
-    ERROR(".*");
+    ERROR(".*")
+    , FRACTION(TokenType.DOT + TokenType.DIGIT + TokenType.KLEENE + " " + TokenType.NONZERO + TokenType.UNION + TokenType.DOT + "0")
+    , INTEGER(TokenType.NONZERO + " " + TokenType.DIGIT + TokenType.KLEENE + TokenType.UNION + "0")
+    , FLOAT(TokenType.INTEGER + " " + TokenType.FRACTION)
+    , NUM(TokenType.INTEGER + TokenType.UNION + TokenType.FLOAT)
+    , ALPHANUM(TokenType.LETTER + TokenType.UNION + TokenType.DIGIT + TokenType.UNION + "_")
+    , ID(TokenType.LETTER + " " + TokenType.ALPHANUM + TokenType.KLEENE)
+    , RESERVED(TokenType.PUNCTUATION_OR_RESERVED)
+    , COMMENT(TokenType.MULTI_LINE_COMMENT);
 
     public final String tokenPattern;
+
+    private static final String NONZERO = "1-9";
+    private static final String DIGIT = "0-9";
+    private static final String LETTER = "a-zA-Z";
+    private static final String PUNCTUATION_OR_RESERVED = "[=]?[=<>;,.+\\-*/\\[\\]{}()][=]?| and | not | or | if | then | else | for | class | int | float | get | return | void | main ";
+    private static final String MULTI_LINE_COMMENT = "/\\*.*\\*/";
+
+    private static final String UNION = "|";
+    private static final String KLEENE = "*";
+    private static final String DOT = "\\.";
 
     TokenType(String tokenPattern) {
         this.tokenPattern = tokenPattern;

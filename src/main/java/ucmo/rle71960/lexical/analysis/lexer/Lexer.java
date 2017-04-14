@@ -1,6 +1,7 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
 import java.io.InputStream;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -34,11 +35,19 @@ public class Lexer {
         result = new Result();
     }
 
-    public Result scan(InputStream stream) {
+    public Result scan(String toScan) {
         // TODO
         Pattern patterns = compiledPattern();
+        Matcher matcher = patterns.matcher(toScan);
 
-
+        while ( matcher.find() ) {
+            if ( matcher.group(TokenType.ERROR.name()) != null) {
+                result.addToken(new Token(TokenType.ERROR, matcher.group(TokenType.ERROR.name())));
+            }
+            else {
+                continue;
+            }
+        }
         return result;
     }
 

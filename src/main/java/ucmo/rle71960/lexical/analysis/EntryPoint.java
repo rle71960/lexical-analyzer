@@ -32,7 +32,7 @@ import java.io.InputStream;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class Entry {
+public class EntryPoint {
 
     public static void main(String[] args) {
         if ( args.length < 1 ) {
@@ -45,31 +45,28 @@ public class Entry {
     }
 
     public static Result run(String pathOrText) {
-        InputStream is = null;
+        String toScan = null;
         Result result;
         try {
-            is = stringOrFileToInputStream(pathOrText);
+            toScan = maybeFileToString(pathOrText);
             Lexer lexer = new Lexer();
-            result = lexer.scan(is);
+            result = lexer.scan(toScan);
         }
         catch(IOException e) {
             System.out.println("Couldn't read file '" + pathOrText + "'.");
             e.printStackTrace();
             result = null;
         }
-        finally {
-            IOUtils.closeQuietly(is);
-        }
         return result;
     }
 
-    private static InputStream stringOrFileToInputStream(String in) throws IOException {
-        File file = new File(in);
-        if ( file.isFile() ) {
-            return FileUtils.openInputStream(file);
+    private static String maybeFileToString(String maybeFile) throws IOException {
+        File file = new File(maybeFile);
+        if ( file.exists() && file.isFile() ) {
+            return FileUtils.readFileToString(file, "UTF-8");
         }
         else {
-            return IOUtils.toInputStream(in, "UTF-8");
+            return maybeFile;
         }
     }
 }
