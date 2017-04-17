@@ -1,4 +1,4 @@
-package ucmo.rle71960.lexical.analysis.lexer;
+package ucmo.rle71960.lexical.analysis.lexer.messages;
 
 /**
  * lexical-analyzer
@@ -23,5 +23,21 @@ package ucmo.rle71960.lexical.analysis.lexer;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public interface TokenType {
+public class Message {
+
+    private MessageType type;
+    private Object body;
+
+    public Message(MessageType type, Object body) {
+        this.type = type;
+        this.body = body;
+    }
+
+    public MessageType getType() {
+        return this.type;
+    }
+
+    public Object getBody() {
+        return this.body;
+    }
 }

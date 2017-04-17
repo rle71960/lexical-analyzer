@@ -1,5 +1,7 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
+import java.io.IOException;
+
 /**
  * lexical-analyzer
  * <p>
@@ -25,20 +27,42 @@ package ucmo.rle71960.lexical.analysis.lexer;
  */
 public class Token {
 
-    private TokenType type;
-    private String token;
+    protected TokenType type;
+    protected String text;
+    protected Source source;
+    protected int position;
+    protected int lineNumber;
+    protected Object value;
 
-    Token(TokenType type, String token) {
-        this.type = type;
-        this.token = token;
+    public Token(Source s) {
+        this.source = s;
+        this.position = s.getCurrentPosition();
+        this.lineNumber = s.getLineNumber();
+
+        try {
+            extractToken();
+        }
+        catch (IOException e) {
+            System.err.println("An exception was caught while constructing a Token");
+            e.printStackTrace();
+        }
     }
 
-    public TokenType getType() {
-        return this.type;
+    protected void extractToken() throws IOException {
+        this.text = Character.toString(this.source.currentChar());
+        this.value = null;
+        this.source.nextChar();
     }
 
-    @Override
-    public String toString() {
-        return this.token;
+    protected char currentChar() throws IOException {
+        return source.currentChar();
+    }
+
+    protected char nextChar() throws IOException {
+        return source.nextChar();
+    }
+
+    protected char lookAheadOne() throws IOException {
+        return source.lookAheadOne();
     }
 }

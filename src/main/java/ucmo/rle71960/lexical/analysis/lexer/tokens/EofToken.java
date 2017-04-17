@@ -1,4 +1,7 @@
-package ucmo.rle71960.lexical.analysis.lexer;
+package ucmo.rle71960.lexical.analysis.lexer.tokens;
+
+import ucmo.rle71960.lexical.analysis.lexer.Source;
+import ucmo.rle71960.lexical.analysis.lexer.Token;
 
 /**
  * lexical-analyzer
@@ -23,5 +26,14 @@ package ucmo.rle71960.lexical.analysis.lexer;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public interface TokenType {
+public class EofToken extends Token{
+
+    public EofToken(Source s) {
+        super(s);
+    }
+
+    @Override
+    protected void extractToken() {
+        // Do nothing
+    }
 }

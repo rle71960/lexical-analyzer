@@ -1,8 +1,13 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
+import ucmo.rle71960.lexical.analysis.lexer.tokens.EofToken;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static ucmo.rle71960.lexical.analysis.lexer.Source.EOF;
 
 /**
  * lexical-analyzer
@@ -29,39 +34,54 @@ import java.util.regex.Pattern;
  */
 public class Lexer {
 
-    Result result;
+    protected Source source;
+    private Token currentToken;
 
-    public Lexer() {
-        result = new Result();
+    public Lexer(Source s) {
+        this.source = s;
     }
 
-    public Result scan(String toScan) {
-        // TODO
-        Pattern patterns = compiledPattern();
-        Matcher matcher = patterns.matcher(toScan);
+    public Token currentToken() {
+        return currentToken;
+    }
 
-        while ( matcher.find() ) {
-            if ( matcher.group(TokenType.ERROR.name()) != null) {
-                result.addToken(new Token(TokenType.ERROR, matcher.group(TokenType.ERROR.name())));
-            }
-            else {
-                continue;
-            }
+    public Token nextToken() throws IOException {
+        currentToken = getToken();
+        return currentToken;
+    }
+
+    Token getToken() throws IOException {
+        skipWhiteSpace();
+        Token token;
+        char currentChar = currentChar();
+
+        if ( currentChar == EOF ) {
+            token = new EofToken(source, END_OF_FILE);
         }
-        return result;
-    }
-
-    Pattern compiledPattern(final String formattableStringToUse) {
-        final int AFTER_INITIAL_UNION = 1;
-        StringBuilder tokenPatterns = new StringBuilder();
-        for ( TokenType type : TokenType.values() ) {
-            tokenPatterns.append(String.format(formattableStringToUse, type.name(), type.tokenPattern));
+        else if ( Character.isLetter(currentChar) ) {
+            token = new WordToken(source);
         }
-        return Pattern.compile(tokenPatterns.substring(AFTER_INITIAL_UNION));
+        else if ( Character.isDigit(currentChar) ) {
+            token = new NumberToken(source);
+        }
+        else if ( currentChar == '\'' ) {
+            token = new StringToken(source);
+        }
+        else if ( TokenType.SPECIAL_SYMBOLS.containsKey(Character.toString(currentChar)) ) {
+            token = new SpecialSymbolToken(source);
+        }
+        else {
+            token = new ErrorToken(source, INVALID_CHARACTER, Character.toString(currentChar));
+            nextChar();
+        }
+        return token;
     }
 
-    Pattern compiledPattern() {
-        final String FORMATTABLE_PATTERN_STRING = "|(?<%s>%s)";
-        return compiledPattern(FORMATTABLE_PATTERN_STRING);
+    public char currentChar() throws IOException {
+        return source.currentChar();
+    }
+
+    public char nextChar() throws IOException {
+        return source.nextChar();
     }
 }

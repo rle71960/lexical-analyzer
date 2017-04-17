@@ -1,4 +1,7 @@
-package ucmo.rle71960.lexical.analysis.lexer;
+package ucmo.rle71960.lexical.analysis.lexer.messages;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * lexical-analyzer
@@ -23,5 +26,30 @@ package ucmo.rle71960.lexical.analysis.lexer;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public interface TokenType {
+public class MessageHandler {
+    private Message message;
+    private List<MessageListener> listeners;
+
+    public MessageHandler() {
+        this.listeners = new ArrayList<>();
+    }
+
+    public void addListener(MessageListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(MessageListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void sendMessage(Message msg) {
+        this.message = msg;
+        notifyListeners();
+    }
+
+    public void notifyListeners() {
+        for ( MessageListener listener : listeners ) {
+            listener.messageReceived(this.message);
+        }
+    }
 }
