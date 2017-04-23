@@ -62,10 +62,4 @@ public class EntryPointIT {
         entryPoint.printErrors();
     }
 
-    @Test
-    public void semicolon_test() {
-        Map<String, String>  testmap = new HashMap<>();
-        testmap.put(";", ";");
-        Assert.assertTrue(testmap.containsKey(Character.toString(';')));
-    }
 }
