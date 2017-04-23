@@ -47,6 +47,13 @@ public class NumToken extends Token {
 
     protected void extractNumber(StringBuilder buffer) throws IOException {
         // TODO cleanup to use my number types
+        /*
+        TODO i think since we're doing fairly simple numbers, we can consume
+        until either whitespace or non-valid/non-digit, then either split
+        on ".", check that there are only 2 entries at most in the array
+        then use parseInt or go the simplest route and use float.parseFloat
+        ... or something like that, this seems like overkill regardless of the approach we take
+         */
         String beforeDecimal = null;
         String afterDecimal = null;
         boolean hasDecimal = false;
@@ -72,7 +79,7 @@ public class NumToken extends Token {
         if ( this.type == INTEGER ) {
             int integerValue = getIntegerValue(beforeDecimal);
             if ( this.type != ERROR ) {
-                this.value = Integer.valueOf(integerValue;
+                this.value = Integer.valueOf(integerValue);
             }
         }
         else if ( this.type == FLOATINGPOINT ) {
@@ -88,7 +95,7 @@ public class NumToken extends Token {
 
         if ( !Character.isDigit(currentChar)) {
             this.type = ERROR;
-            this.value = INVALID_NUMBER; // TODO currentChar ?
+            this.value = currentChar;
             return null;
         }
 
@@ -122,7 +129,7 @@ public class NumToken extends Token {
         }
 
         this.type = ERROR;
-        this.value = RANGE_INTEGER;
+        this.value = "" + integerValue + ", " + previousValue;
         return 0;
     }
 

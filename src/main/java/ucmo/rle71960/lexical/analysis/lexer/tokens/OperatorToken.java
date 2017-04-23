@@ -72,7 +72,7 @@ public class OperatorToken extends Token {
             default:
                 nextChar();
                 this.type = ERROR;
-                this.value = INVALID_CHARACTER; // TODO currentChar?
+                this.value = currentChar;
                 break;
         }
 

@@ -1,8 +1,6 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
-import ucmo.rle71960.lexical.analysis.lexer.tokens.EofToken;
-import ucmo.rle71960.lexical.analysis.lexer.tokens.NumToken;
-import ucmo.rle71960.lexical.analysis.lexer.tokens.IdToken;
+import ucmo.rle71960.lexical.analysis.lexer.tokens.*;
 
 import java.io.IOException;
 
@@ -67,10 +65,10 @@ public class Lexer {
             token = new NumToken(source);
         }
         else if ( TokenType.OPERATORS.containsKey(Character.toString(currentChar)) ) {
-            token = new SpecialSymbolToken(source);
+            token = new OperatorToken(source);
         }
         else {
-            token = new ErrorToken(source, INVALID_CHARACTER, Character.toString(currentChar));
+            token = new ErrorToken(source, Character.toString(currentChar));
             nextChar();
         }
         return token;

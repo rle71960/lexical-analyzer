@@ -2,6 +2,7 @@ package ucmo.rle71960.lexical.analysis.lexer.tokens;
 
 import ucmo.rle71960.lexical.analysis.lexer.Source;
 import ucmo.rle71960.lexical.analysis.lexer.Token;
+import ucmo.rle71960.lexical.analysis.lexer.TokenType;
 
 /**
  * lexical-analyzer
@@ -28,8 +29,9 @@ import ucmo.rle71960.lexical.analysis.lexer.Token;
  */
 public class EofToken extends Token{
 
-    public EofToken(Source s) {
+    public EofToken(Source s, TokenType type) {
         super(s);
+        this.type = type;
     }
 
     @Override

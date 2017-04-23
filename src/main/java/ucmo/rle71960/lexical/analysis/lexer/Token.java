@@ -43,10 +43,10 @@ public class Token {
             extractToken();
         }
         catch (IOException e) {
-            System.err.println("An exception was caught while constructing a Token");
-            e.printStackTrace();
-        }
+        System.err.println("An exception was caught while constructing a Token");
+        e.printStackTrace();
     }
+}
 
     protected void extractToken() throws IOException {
         this.text = Character.toString(this.source.currentChar());
