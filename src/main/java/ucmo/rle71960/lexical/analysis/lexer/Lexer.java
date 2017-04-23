@@ -1,13 +1,14 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
 import ucmo.rle71960.lexical.analysis.lexer.tokens.EofToken;
+import ucmo.rle71960.lexical.analysis.lexer.tokens.NumToken;
+import ucmo.rle71960.lexical.analysis.lexer.tokens.IdToken;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static ucmo.rle71960.lexical.analysis.lexer.Source.EOF;
+import static ucmo.rle71960.lexical.analysis.lexer.Source.EOL;
+import static ucmo.rle71960.lexical.analysis.lexer.TokenType.END_OF_FILE;
 
 /**
  * lexical-analyzer
@@ -50,6 +51,7 @@ public class Lexer {
         return currentToken;
     }
 
+    // extract method
     Token getToken() throws IOException {
         skipWhiteSpace();
         Token token;
@@ -59,15 +61,12 @@ public class Lexer {
             token = new EofToken(source, END_OF_FILE);
         }
         else if ( Character.isLetter(currentChar) ) {
-            token = new WordToken(source);
+            token = new IdToken(source);
         }
         else if ( Character.isDigit(currentChar) ) {
-            token = new NumberToken(source);
+            token = new NumToken(source);
         }
-        else if ( currentChar == '\'' ) {
-            token = new StringToken(source);
-        }
-        else if ( TokenType.SPECIAL_SYMBOLS.containsKey(Character.toString(currentChar)) ) {
+        else if ( TokenType.OPERATORS.containsKey(Character.toString(currentChar)) ) {
             token = new SpecialSymbolToken(source);
         }
         else {
@@ -77,11 +76,53 @@ public class Lexer {
         return token;
     }
 
+    /**
+     * Get the char at the cursor
+     * @return
+     * @throws IOException
+     */
     public char currentChar() throws IOException {
         return source.currentChar();
     }
 
+    /**
+     * Advance the cursor and consume the current character
+     *  ( or the next character, depending on your viewpoint )
+     * @return
+     * @throws IOException
+     */
     public char nextChar() throws IOException {
         return source.nextChar();
+    }
+
+    // TODO: unit test
+
+    /**
+     * Skip whitespace and comments
+     *
+     * @throws IOException
+     */
+    void skipWhiteSpace() throws IOException {
+        char currentChar = currentChar();
+        while ( Character.isWhitespace(currentChar) || currentChar == '/' ) {
+            char next = nextChar();
+            if ( currentChar == '/' && ( next == '*' || next == '/') ) {
+                if ( next == '*' ) {
+                    do {
+                        currentChar = next;
+                        next = nextChar();
+                    } while ( currentChar != '*' && next != '/' );
+                }
+                else if ( next == '/' ) {
+                    do {
+                        currentChar = nextChar();
+                    }
+                    while ( currentChar != EOL );
+                }
+            }
+            else {
+                currentChar = nextChar();
+            }
+        }
     }
 }

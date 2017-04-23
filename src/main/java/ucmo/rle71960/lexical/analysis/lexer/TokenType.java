@@ -1,5 +1,9 @@
 package ucmo.rle71960.lexical.analysis.lexer;
 
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Set;
+
 /**
  * lexical-analyzer
  * <p>
@@ -23,5 +27,50 @@ package ucmo.rle71960.lexical.analysis.lexer;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public interface TokenType {
+public enum TokenType {
+    /*
+     Operators, punctuation and reserved words
+      */
+    // reserved words
+    AND, NOT, OR, PUT, IF, THEN, ELSE, FOR, CLASS, INT, FLOAT, GET, RETURN, VOID, MAIN
+
+    // operators and punctuation
+    , EQUALS("=="), NOT_EQUALS("<>"), LESS_THAN("<"), GREATER_THAN(">"), LESS_EQUALS("<=")
+    , GREATER_EQUALS(">="), SEMICOLON(";"), COMMA(","), DOT("."), PLUS("+"), MINUS("-")
+    , STAR("*"), SLASH("/"), ASSIGNMENT("="), SLASH_SLASH("//"), LEFT_PAREN("("), RIGHT_PAREN(")")
+    , LEFT_BRACE("{"), RIGHT_BRACE("}"), LEFT_BRACKET("["), RIGHT_BRACKET("]"), SLASH_STAR("/*"), STAR_SLASH("*/")
+
+    , ID, ALPHANUM, NUM, INTEGER, FLOATINGPOINT, FRACTION, LETTER, DIGIT, NONZERO, ERROR, END_OF_FILE;
+
+    private static final int FIRST_RESERVED_INDEX = AND.ordinal();
+    private static final int LAST_RESERVED_INDEDX = MAIN.ordinal();
+
+    private static final int FIRST_OPERATOR_INDEX = EQUALS.ordinal();
+    private static final int LAST_OPERATOR_INDEX = STAR_SLASH.ordinal();
+
+    private String text;
+
+    TokenType() {
+        this.text = this.toString().toLowerCase();
+    }
+
+    TokenType(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return this.text;
+    }
+
+    public static Set<String> RESERVED_WORDS = new HashSet<>();
+    public static Hashtable<String, TokenType> OPERATORS = new Hashtable<>();
+    static {
+        TokenType[] values = TokenType.values();
+        for (int i = FIRST_RESERVED_INDEX; i <= LAST_RESERVED_INDEDX; i++) {
+            RESERVED_WORDS.add(values[i].getText().toLowerCase());
+        }
+        for (int i = FIRST_OPERATOR_INDEX; i <= LAST_OPERATOR_INDEX; i++) {
+            OPERATORS.put(values[i].getText(), values[i]);
+        }
+    }
 }
