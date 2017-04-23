@@ -24,27 +24,15 @@ package ucmo.rle71960.lexical.analysis.lexer;
  * SOFTWARE.
  */
 
-import ucmo.rle71960.lexical.analysis.lexer.messages.Message;
-import ucmo.rle71960.lexical.analysis.lexer.messages.MessageHandler;
-import ucmo.rle71960.lexical.analysis.lexer.messages.MessageListener;
-import ucmo.rle71960.lexical.analysis.lexer.messages.MessageProducer;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-
-import static ucmo.rle71960.lexical.analysis.lexer.messages.MessageType.SOURCE_LINE;
 
 /**
  * This class will represent the source that is to be scanned
  */
-public class Source implements MessageProducer {
+public class Source {
     public static final char EOL = '\n';
     public static final char EOF = (char) 0;
-    protected static MessageHandler messageHandler;
-
-    static {
-        messageHandler = new MessageHandler();
-    }
 
     private BufferedReader reader;
     private int lineNumber;
@@ -63,7 +51,6 @@ public class Source implements MessageProducer {
         // reset the current position on the line to just before the first char
         if ( line != null ) {
             lineNumber += 1;
-            sendMessage( new Message(SOURCE_LINE, new Object[] {lineNumber, line})) ;
         }
     }
 
@@ -127,18 +114,4 @@ public class Source implements MessageProducer {
         return this.lineNumber;
     }
 
-    @Override
-    public void addMessageListener(MessageListener listener) {
-        messageHandler.addListener(listener);
-    }
-
-    @Override
-    public void removeMessageListener(MessageListener listener) {
-        messageHandler.removeListener(listener);
-    }
-
-    @Override
-    public void sendMessage(Message message) {
-        messageHandler.sendMessage(message);
-    }
 }
