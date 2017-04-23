@@ -106,6 +106,8 @@ public class Lexer {
             char next = nextChar();
             if ( currentChar == '/' && ( next == '*' || next == '/') ) {
                 if ( next == '*' ) {
+                    currentChar = nextChar();
+                    next = nextChar();
                     do {
                         currentChar = next;
                         next = nextChar();
