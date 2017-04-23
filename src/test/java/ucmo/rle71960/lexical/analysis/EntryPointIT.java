@@ -6,6 +6,8 @@ import org.junit.Test;
 import ucmo.rle71960.lexical.analysis.lexer.Result;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * lexical-analyzer
@@ -43,15 +45,28 @@ public class EntryPointIT {
     public void only_error_token_test() {
         File file = new File(EntryPointIT.class.getClassLoader().getResource("testfile1").getFile());
         Assert.assertNotNull(file);
-        Result result = entryPoint.run(file.getAbsolutePath());
-        result.print(System.out::println);
+        EntryPoint.run(file.getAbsolutePath());
+        entryPoint.printOperators();
+        entryPoint.printIds();
+        entryPoint.printNum();
+        entryPoint.printErrors();
     }
 
     @Test
     public void main_test() {
         File file = new File(EntryPointIT.class.getClassLoader().getResource("main").getFile());
         Assert.assertNotNull(file);
-        Result result = entryPoint.run(file.getAbsolutePath());
-        result.print(System.out::println);
+        EntryPoint.run(file.getAbsolutePath());
+        entryPoint.printOperators();
+        entryPoint.printIds();
+        entryPoint.printNum();
+        entryPoint.printErrors();
+    }
+
+    @Test
+    public void semicolon_test() {
+        Map<String, String>  testmap = new HashMap<>();
+        testmap.put(";", ";");
+        Assert.assertTrue(testmap.containsKey(Character.toString(';')));
     }
 }
