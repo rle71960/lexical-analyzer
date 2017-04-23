@@ -52,6 +52,14 @@ public class Token {
         return this.type;
     }
 
+    public Object getValue() {
+        return this.value;
+    }
+
+    public String getText() {
+        return this.text;
+    }
+
     protected void extractToken() throws IOException {
         this.text = Character.toString(this.source.currentChar());
         this.value = null;

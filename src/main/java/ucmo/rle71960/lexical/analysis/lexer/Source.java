@@ -53,8 +53,8 @@ public class Source implements MessageProducer {
 
     public Source(BufferedReader reader) {
         this.lineNumber = 0;
-        // -5 is a special value indicating no reads have occurred
-        this.currentPosition = -5;
+        // -1 is a special value indicating no reads have occurred
+        this.currentPosition = -1;
         this.reader = reader;
     }
 
@@ -69,7 +69,7 @@ public class Source implements MessageProducer {
 
     public char currentChar() throws IOException {
         // if this is the first pass
-        if ( currentPosition == -5 ) {
+        if ( currentPosition == -1 ) {
             readLine();
             return nextChar();
         }
@@ -81,6 +81,7 @@ public class Source implements MessageProducer {
         }
         else if ( currentPosition > line.length() ) {
             readLine();
+            currentPosition = 0;
             return nextChar();
         }
 

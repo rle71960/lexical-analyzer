@@ -50,7 +50,7 @@ public class Lexer {
     }
 
     // extract method
-    Token getToken() throws IOException {
+    public Token getToken() throws IOException {
         skipWhiteSpace();
         Token token;
         char currentChar = currentChar();
@@ -119,7 +119,7 @@ public class Lexer {
                 }
             }
             else {
-                currentChar = nextChar();
+                currentChar = next;
             }
         }
     }

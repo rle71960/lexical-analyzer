@@ -5,9 +5,7 @@ import ucmo.rle71960.lexical.analysis.lexer.Token;
 
 import java.io.IOException;
 
-import static ucmo.rle71960.lexical.analysis.lexer.TokenType.ERROR;
-import static ucmo.rle71960.lexical.analysis.lexer.TokenType.FLOATINGPOINT;
-import static ucmo.rle71960.lexical.analysis.lexer.TokenType.INTEGER;
+import static ucmo.rle71960.lexical.analysis.lexer.TokenType.*;
 
 /**
  * lexical-analyzer
@@ -81,30 +79,34 @@ public class NumToken extends Token {
 
         if ( this.type == INTEGER ) {
             int integerValue = getIntegerValue(beforeDecimal);
+            this.type = NUM;
             if ( this.type != ERROR ) {
                 this.value = Integer.valueOf(integerValue);
             }
         }
         else if ( this.type == FLOATINGPOINT ) {
-            if ( this.type != ERROR ) {
-                try {
-                    this.value = Float.valueOf(beforeDecimal + "." + afterDecimal);
-                }
-                catch (NumberFormatException e) {
-                    this.type = ERROR;
-                    this.value = beforeDecimal + "." + afterDecimal;
-                }
+            this.type = NUM;
+            try {
+                this.value = Float.valueOf(beforeDecimal + "." + afterDecimal);
+            }
+            catch (NumberFormatException e) {
+                this.type = ERROR;
+                this.value = beforeDecimal + "." + afterDecimal;
             }
         }
     }
 
     private String integerDigits(StringBuilder buffer) throws IOException {
         char currentChar = currentChar();
+        if ( Character.toString(currentChar).equals("."))
+        {
+            currentChar = nextChar();
+        }
 
         if ( !Character.isDigit(currentChar)) {
             this.type = ERROR;
             // TODO does this output the correct value as the ERROR token?
-            this.value = currentChar;
+            this.text = Character.toString(currentChar);
             return null;
         }
 

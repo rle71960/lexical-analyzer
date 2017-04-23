@@ -35,15 +35,17 @@ public enum TokenType {
     AND, NOT, OR, PUT, IF, THEN, ELSE, FOR, CLASS, INT, FLOAT, GET, RETURN, VOID, MAIN
 
     // operators and punctuation
-    , EQUALS("=="), NOT_EQUALS("<>"), LESS_THAN("<"), GREATER_THAN(">"), LESS_EQUALS("<=")
-    , GREATER_EQUALS(">="), SEMICOLON(";"), COMMA(","), DOT("."), PLUS("+"), MINUS("-")
-    , STAR("*"), SLASH("/"), ASSIGNMENT("="), SLASH_SLASH("//"), LEFT_PAREN("("), RIGHT_PAREN(")")
-    , LEFT_BRACE("{"), RIGHT_BRACE("}"), LEFT_BRACKET("["), RIGHT_BRACKET("]"), SLASH_STAR("/*"), STAR_SLASH("*/")
+    ,EQUALS("=="), NOT_EQUALS("<>"), LESS_THAN("<"), GREATER_THAN(">"), LESS_EQUALS("<=")
+    ,GREATER_EQUALS(">="), SEMICOLON(";"), COMMA(","), DOT("."), PLUS("+"), MINUS("-")
+    ,STAR("*"), SLASH("/"), ASSIGNMENT("="), SLASH_SLASH("//"), LEFT_PAREN("("), RIGHT_PAREN(")")
+    ,LEFT_BRACE("{"), RIGHT_BRACE("}"), LEFT_BRACKET("["), RIGHT_BRACKET("]"), SLASH_STAR("/*"), STAR_SLASH("*/")
+
+    ,OPERATOR
 
     , ID, ALPHANUM, NUM, INTEGER, FLOATINGPOINT, FRACTION, LETTER, DIGIT, NONZERO, ERROR, END_OF_FILE;
 
     private static final int FIRST_RESERVED_INDEX = AND.ordinal();
-    private static final int LAST_RESERVED_INDEDX = MAIN.ordinal();
+    private static final int LAST_RESERVED_INDEX = MAIN.ordinal();
 
     private static final int FIRST_OPERATOR_INDEX = EQUALS.ordinal();
     private static final int LAST_OPERATOR_INDEX = STAR_SLASH.ordinal();
@@ -66,7 +68,7 @@ public enum TokenType {
     public static Hashtable<String, TokenType> OPERATORS = new Hashtable<>();
     static {
         TokenType[] values = TokenType.values();
-        for (int i = FIRST_RESERVED_INDEX; i <= LAST_RESERVED_INDEDX; i++) {
+        for (int i = FIRST_RESERVED_INDEX; i <= LAST_RESERVED_INDEX; i++) {
             RESERVED_WORDS.add(values[i].getText().toLowerCase());
         }
         for (int i = FIRST_OPERATOR_INDEX; i <= LAST_OPERATOR_INDEX; i++) {

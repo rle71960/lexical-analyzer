@@ -6,7 +6,7 @@ import ucmo.rle71960.lexical.analysis.lexer.Token;
 import java.io.IOException;
 
 import static ucmo.rle71960.lexical.analysis.lexer.TokenType.ERROR;
-import static ucmo.rle71960.lexical.analysis.lexer.TokenType.OPERATORS;
+import static ucmo.rle71960.lexical.analysis.lexer.TokenType.OPERATOR;
 
 /**
  * lexical-analyzer
@@ -77,7 +77,7 @@ public class OperatorToken extends Token {
         }
 
         if ( this.type == null ) {
-            this.type = OPERATORS.get(this.text);
+            this.type = OPERATOR;
         }
     }
 }

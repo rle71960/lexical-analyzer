@@ -2,12 +2,14 @@ package ucmo.rle71960.lexical.analysis;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import ucmo.rle71960.lexical.analysis.lexer.Lexer;
-import ucmo.rle71960.lexical.analysis.lexer.Result;
+import ucmo.rle71960.lexical.analysis.lexer.*;
+import ucmo.rle71960.lexical.analysis.lexer.tokens.EofToken;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * lexical-analyzer
@@ -34,39 +36,95 @@ import java.io.InputStream;
  */
 public class EntryPoint {
 
+    static Map<TokenType, List<Token>> tokens;
+    static {
+        tokens = new HashMap<>();
+        for ( TokenType type : TokenType.values() ) {
+            tokens.put(type, new ArrayList<>());
+        }
+    }
+
     public static void main(String[] args) {
         if ( args.length < 1 ) {
             System.out.println("Usage: java -jar <this-jar> [path-to-file | string]");
             System.exit(1);
         }
+        EntryPoint ep = new EntryPoint();
         final int ONLY_THE_FIRST = 0;
-        Result result = run(args[ONLY_THE_FIRST]);
-        result.print(System.out::println);
+        // TODO delete Result class?
+        // TODO register listeners for our token types
+        // TODO print from token type listeners
+        run(args[ONLY_THE_FIRST]);
+        ep.printOperators();
+        ep.printIds();
+        ep.printNum();
+        ep.printErrors();
     }
 
-    public static Result run(String pathOrText) {
-        String toScan = null;
-        Result result;
+    public static void run(String pathOrText) {
+        Source toScan;
         try {
-            toScan = maybeFileToString(pathOrText);
-            Lexer lexer = new Lexer();
-            result = lexer.scan(toScan);
+            toScan = new Source(maybeFileToString(pathOrText));
+            Lexer lexer = new Lexer(toScan);
+            Token token = lexer.getToken();
+            while ( token.getType() != TokenType.END_OF_FILE ) {
+                // TODO add to lists or something
+                tokens.get(token.getType()).add(token);
+                token = lexer.getToken();
+            }
         }
         catch(IOException e) {
             System.out.println("Couldn't read file '" + pathOrText + "'.");
             e.printStackTrace();
-            result = null;
         }
-        return result;
     }
 
-    private static String maybeFileToString(String maybeFile) throws IOException {
+    private static BufferedReader maybeFileToString(String maybeFile) throws IOException {
         File file = new File(maybeFile);
         if ( file.exists() && file.isFile() ) {
-            return FileUtils.readFileToString(file, "UTF-8");
+            FileInputStream fis = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader(fis);
+            return new BufferedReader(isr);
         }
         else {
-            return maybeFile;
+            ByteArrayInputStream is = new ByteArrayInputStream(maybeFile.getBytes());
+            return new BufferedReader(new InputStreamReader(is));
         }
+    }
+
+    public void printOperators() {
+        System.out.println("Operators, punctuations, and reserved words:");
+        List<Token> operatorTokens = tokens.get(TokenType.OPERATOR);
+        for (Token token : operatorTokens) {
+            System.out.print(token.getText() + " ");
+        }
+        System.out.println("\n");
+    }
+
+    public void printIds() {
+        System.out.println("id:");
+        List<Token> idTokens = tokens.get(TokenType.ID);
+        for (Token token : idTokens) {
+            System.out.print(token.getText() + " ");
+        }
+        System.out.println("\n");
+    }
+
+    public void printNum() {
+        System.out.println("num:");
+        List<Token> numTokens = tokens.get(TokenType.NUM);
+        for (Token token : numTokens) {
+            System.out.print(token.getText() + " ");
+        }
+        System.out.println("\n");
+    }
+
+    public void printErrors() {
+        System.out.println("error token:");
+        List<Token> errorTokens = tokens.get(TokenType.ERROR);
+        for (Token token : errorTokens) {
+            System.out.print(token.getText() + " ");
+        }
+        System.out.println("\n");
     }
 }

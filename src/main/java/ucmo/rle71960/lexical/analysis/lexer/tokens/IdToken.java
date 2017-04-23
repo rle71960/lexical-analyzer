@@ -7,6 +7,7 @@ import ucmo.rle71960.lexical.analysis.lexer.TokenType;
 import java.io.IOException;
 
 import static ucmo.rle71960.lexical.analysis.lexer.TokenType.ID;
+import static ucmo.rle71960.lexical.analysis.lexer.TokenType.OPERATOR;
 import static ucmo.rle71960.lexical.analysis.lexer.TokenType.RESERVED_WORDS;
 
 /**
@@ -50,7 +51,7 @@ public class IdToken extends Token {
         this.text = buffer.toString();
 
         if ( RESERVED_WORDS.contains(text.toLowerCase()) ) {
-            this.type = TokenType.valueOf(text.toUpperCase());
+            this.type = OPERATOR;
         }
         else {
             this.type = ID;
