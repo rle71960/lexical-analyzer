@@ -44,7 +44,7 @@ public class EntryPoint {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if ( args.length < 1 ) {
             System.out.println("Usage: java -jar <this-jar> [path-to-file | string]");
             System.exit(1);
@@ -58,10 +58,12 @@ public class EntryPoint {
         ep.printErrors();
     }
 
-    public static void run(String pathOrText) {
+    public static void run(String pathOrText) throws IOException {
         Source toScan;
+        BufferedReader reader = null;
         try {
-            toScan = new Source(maybeFileToString(pathOrText));
+            reader = maybeFileToString(pathOrText);
+            toScan = new Source(reader);
             Lexer lexer = new Lexer(toScan);
             Token token = lexer.getToken();
             while ( token.getType() != TokenType.END_OF_FILE ) {
@@ -72,6 +74,11 @@ public class EntryPoint {
         catch(IOException e) {
             System.out.println("Couldn't read file '" + pathOrText + "'.");
             e.printStackTrace();
+        }
+        finally {
+            if (reader != null) {
+                reader.close();
+            }
         }
     }
 

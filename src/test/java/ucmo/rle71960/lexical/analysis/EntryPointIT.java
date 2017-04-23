@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class EntryPointIT {
     }
 
     @Test
-    public void only_error_token_test() {
+    public void only_error_token_test() throws IOException {
         File file = new File(EntryPointIT.class.getClassLoader().getResource("testfile1").getFile());
         Assert.assertNotNull(file);
         EntryPoint.run(file.getAbsolutePath());
@@ -49,7 +50,7 @@ public class EntryPointIT {
     }
 
     @Test
-    public void main_test() {
+    public void main_test() throws IOException {
         File file = new File(EntryPointIT.class.getClassLoader().getResource("main").getFile());
         Assert.assertNotNull(file);
         EntryPoint.run(file.getAbsolutePath());
@@ -57,7 +58,7 @@ public class EntryPointIT {
     }
 
     @Test
-    public void allTokens() {
+    public void allTokens() throws IOException {
         File file = new File(EntryPointIT.class.getClassLoader().getResource("allTokens").getFile());
         Assert.assertNotNull(file);
         EntryPoint.run(file.getAbsolutePath());
