@@ -84,4 +84,5 @@ error token:
 ```
 
 Assumptions:
-1) In the "sample output" alphanum is really a list of integers.
+1) In the sample output alphanum is really a list of integers. Since an alphanum *must* start with a letter, the sample output cannot be correct. Therefore, I omit alphanum from my output and include the requested values as 'num'. Additionally, since all tokens starting with a letter are either id's or defined as a keyword, then if an encountered token is *not* explicitly defined as a keyword, it's included as an id. It's assumed this would be caught later during semantic analysis
+2) Although in the sample output id's aren't listed more than once, I assume that this scanner makes no determination on whether values can be repeated; it simply tokenizes and leaves additional logic such as placing the tokens into a symbol table for another module. Therefore in my output tokens are repeated for all token types when applicable, including id's
