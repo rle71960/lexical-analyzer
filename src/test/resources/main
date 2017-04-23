@@ -1,9 +1,9 @@
 void main( )
         {
-         int a=15, b_, c=5;
-         float d=2.2;
+         int a=15, b_, c=5;
+         float d=2.2;
          if (c%2==0) /* checking if c is even */
                     {
-                        printf(“a”);
+                        printf(“a”);
                     }
         }
