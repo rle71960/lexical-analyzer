@@ -61,6 +61,7 @@ public class NumToken extends Token {
 
         this.type = INTEGER;
 
+        // here we consume up to the decimal point
         beforeDecimal = integerDigits(buffer);
         if ( this.type == ERROR ) {
             return;
@@ -68,12 +69,14 @@ public class NumToken extends Token {
 
         // this will be a decimal
         currentChar = currentChar();
-        buffer.append(currentChar);
-        currentChar = currentChar();
+        if ( currentChar == '.' ) {
+            this.type = FLOATINGPOINT;
+            buffer.append(currentChar);
 
-        afterDecimal = integerDigits(buffer);
-        if ( this.type == ERROR ) {
-            return;
+            afterDecimal = integerDigits(buffer);
+            if (this.type == ERROR) {
+                return;
+            }
         }
 
         if ( this.type == INTEGER ) {
@@ -83,9 +86,14 @@ public class NumToken extends Token {
             }
         }
         else if ( this.type == FLOATINGPOINT ) {
-            float floatValue = getFloatValue(beforeDecimal, afterDecimal);
             if ( this.type != ERROR ) {
-                this.value = Float.valueOf(floatValue);
+                try {
+                    this.value = Float.valueOf(beforeDecimal + "." + afterDecimal);
+                }
+                catch (NumberFormatException e) {
+                    this.type = ERROR;
+                    this.value = beforeDecimal + "." + afterDecimal;
+                }
             }
         }
     }
@@ -95,6 +103,7 @@ public class NumToken extends Token {
 
         if ( !Character.isDigit(currentChar)) {
             this.type = ERROR;
+            // TODO does this output the correct value as the ERROR token?
             this.value = currentChar;
             return null;
         }
@@ -129,22 +138,9 @@ public class NumToken extends Token {
         }
 
         this.type = ERROR;
-        this.value = "" + integerValue + ", " + previousValue;
+        // TODO does this output the correct value on ERROR? Is this even an issue?
+        this.value = integerValue;
         return 0;
     }
 
-    private float getFloatValue(String beforeDecimal, String afterDecimal) {
-        // I pretty much took this part from the book without the exponent part...not sure this works
-        // TODO on further examination I think this method won't work, we can simplify
-        double floatValue = 0.0;
-        String numbers = beforeDecimal;
-        numbers += afterDecimal;
-
-        int index = 0;
-        while (index < numbers.length()) {
-            floatValue = 10 * floatValue + Character.getNumericValue(numbers.charAt(index));
-        }
-
-        return (float) floatValue;
-    }
 }
