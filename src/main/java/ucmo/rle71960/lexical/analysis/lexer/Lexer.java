@@ -93,8 +93,6 @@ public class Lexer {
         return source.nextChar();
     }
 
-    // TODO: unit test
-
     /**
      * Skip whitespace and comments
      *

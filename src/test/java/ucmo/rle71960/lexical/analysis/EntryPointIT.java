@@ -3,7 +3,6 @@ package ucmo.rle71960.lexical.analysis;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ucmo.rle71960.lexical.analysis.lexer.Result;
 
 import java.io.File;
 import java.util.HashMap;

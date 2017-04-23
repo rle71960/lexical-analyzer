@@ -81,7 +81,7 @@ public class Source implements MessageProducer {
         }
         else if ( currentPosition > line.length() ) {
             readLine();
-            currentPosition = 0;
+            currentPosition = -1;
             return nextChar();
         }
 

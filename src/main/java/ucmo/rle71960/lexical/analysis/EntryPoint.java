@@ -51,9 +51,6 @@ public class EntryPoint {
         }
         EntryPoint ep = new EntryPoint();
         final int ONLY_THE_FIRST = 0;
-        // TODO delete Result class?
-        // TODO register listeners for our token types
-        // TODO print from token type listeners
         run(args[ONLY_THE_FIRST]);
         ep.printOperators();
         ep.printIds();
@@ -68,7 +65,6 @@ public class EntryPoint {
             Lexer lexer = new Lexer(toScan);
             Token token = lexer.getToken();
             while ( token.getType() != TokenType.END_OF_FILE ) {
-                // TODO add to lists or something
                 tokens.get(token.getType()).add(token);
                 token = lexer.getToken();
             }
