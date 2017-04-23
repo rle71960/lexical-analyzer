@@ -45,10 +45,7 @@ public class EntryPointIT {
         File file = new File(EntryPointIT.class.getClassLoader().getResource("testfile1").getFile());
         Assert.assertNotNull(file);
         EntryPoint.run(file.getAbsolutePath());
-        entryPoint.printOperators();
-        entryPoint.printIds();
-        entryPoint.printNum();
-        entryPoint.printErrors();
+        print(entryPoint);
     }
 
     @Test
@@ -56,10 +53,22 @@ public class EntryPointIT {
         File file = new File(EntryPointIT.class.getClassLoader().getResource("main").getFile());
         Assert.assertNotNull(file);
         EntryPoint.run(file.getAbsolutePath());
-        entryPoint.printOperators();
-        entryPoint.printIds();
-        entryPoint.printNum();
-        entryPoint.printErrors();
+        print(entryPoint);
+    }
+
+    @Test
+    public void allTokens() {
+        File file = new File(EntryPointIT.class.getClassLoader().getResource("allTokens").getFile());
+        Assert.assertNotNull(file);
+        EntryPoint.run(file.getAbsolutePath());
+        print(entryPoint);
+    }
+
+    private void print(EntryPoint ep) {
+        ep.printOperators();
+        ep.printIds();
+        ep.printNum();
+        ep.printErrors();
     }
 
 }

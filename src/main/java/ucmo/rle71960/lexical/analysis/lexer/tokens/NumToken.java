@@ -40,7 +40,6 @@ public class NumToken extends Token {
     protected void extractToken() throws IOException {
         StringBuilder buffer = new StringBuilder();
         extractNumber(buffer);
-        this.text = buffer.toString();
     }
 
     protected void extractNumber(StringBuilder buffer) throws IOException {
@@ -70,16 +69,23 @@ public class NumToken extends Token {
         }
 
         if ( this.type == INTEGER ) {
-            int integerValue = getIntegerValue(beforeDecimal);
             this.type = NUM;
-            if ( this.type != ERROR ) {
-                this.value = Integer.valueOf(integerValue);
+            try {
+                Integer integer = Integer.valueOf(buffer.toString());
+                this.value = integer;
+                this.text = integer.toString();
+            }
+            catch(NumberFormatException e) {
+                this.type = ERROR;
+                this.value = beforeDecimal;
             }
         }
         else if ( this.type == FLOATINGPOINT ) {
             this.type = NUM;
             try {
-                this.value = Float.valueOf(beforeDecimal + "." + afterDecimal);
+                Float floatValue = Float.valueOf(buffer.toString());
+                this.value = floatValue;
+                this.text = floatValue.toString();
             }
             catch (NumberFormatException e) {
                 this.type = ERROR;
@@ -109,30 +115,6 @@ public class NumToken extends Token {
         }
 
         return integerDigits.toString();
-    }
-
-    private int getIntegerValue(String numbers) {
-        if ( numbers == null ) {
-            return 0;
-        }
-
-        int integerValue = 0;
-        int previousValue = -1;
-        int index = 0;
-
-        while ( index < numbers.length() && integerValue >= previousValue ) {
-            previousValue = integerValue;
-            integerValue = 10 * integerValue + Character.getNumericValue(numbers.charAt(index));
-            index += 1;
-        }
-
-        if (integerValue >= previousValue) {
-            return integerValue;
-        }
-
-        this.type = ERROR;
-        this.value = integerValue;
-        return 0;
     }
 
 }

@@ -1,0 +1,6 @@
+// _a5 should be an error
+a5 a_5 a5_ _a5
+5.5 0.5 1.0 1 5 100
+011
+== <> < > <= >= ; , . + - * / = and not or ( ) { } []
+put if then else for class int float get return void main
